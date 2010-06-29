@@ -259,5 +259,4 @@ class Events::EventsControllerTest < ActionController::TestCase
       end
     end
   end
-
 end

@@ -5,12 +5,13 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "events"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Bare Bones Events CMS Rails Engine}
+    gem.description = %Q{Bare Bones Events CMS Rails Engine}
     gem.email = "macarui@gmail.com"
     gem.homepage = "http://github.com/maca/events"
     gem.authors = ["Macario Ortega"]
     gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
+    gem.add_dependency('table_builder', '= 0.1.0')
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
