@@ -7,7 +7,7 @@ require 'test/unit'
 require 'shoulda'
 
 require 'support/migrations'
-require 'events'
+require 'schedular'
 
 class Test::Unit::TestCase
 end
