@@ -21,3 +21,4 @@ pkg
 ## PROJECT::SPECIFIC
 test/rails_app/db
 test/rails_app/log
+
