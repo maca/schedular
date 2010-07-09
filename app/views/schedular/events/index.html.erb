@@ -1,18 +1,26 @@
-<h1>Listing events</h1>
+<h1>
+  <%- date = Date.civil params[:year].to_i, params[:month].to_i, (params[:day] || 1).to_i -%>
+  <%- date = I18n.l date, :format => (params[:day] ? :long : :month) -%>
+  <%= I18n.t 'schedular.views.events.headers.listing', :date => date %>
+</h1>
 
-<table>
-  <tr>
-  </tr>
+<%- for event in @events -%>
+  <dl>
+    <dt><%= link_to event.name, event %></dt>
+    <dd class='description'>
+      <%= event.description %>
+    </dd>
+    <dd class='admin'>
+      <%= link_to I18n.t('views.actions.edit'), edit_schedular_event_path(event) %> |
+      <%= link_to I18n.t('views.actions.destroy'), event, :method => :delete, :confirm => I18n.t('views.prompts.confirm_destroy', :model => Schedular::Event.human_name) %>
+    </dd>
+  </dl>
+<%- end -%>
 
-<% @events.each do |event| %>
-  <tr>
-    <td><%= link_to 'Show', event %></td>
-    <td><%= link_to 'Edit', edit_schedular_event_path(event) %></td>
-    <td><%= link_to 'Destroy', event, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+<p class='actions'>
+  <%= link_to I18n.t('views.actions.create', :model => Schedular::Event.human_name), new_schedular_event_path %>
+</p>
 
-<br />
-
-<%= link_to 'New event', new_schedular_event_path %>
+<%- content_for :calendar do -%>
+  <%= render 'calendar', :events => @month_events, :month => params[:month], :year => params[:year] %>
+<%- end -%>

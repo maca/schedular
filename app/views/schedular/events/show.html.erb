@@ -1,3 +1,26 @@
+<h1><%= h @event.name %></h1>
 
-<%= link_to 'Edit', edit_schedular_event_path(@event) %> |
-<%= link_to 'Back', schedular_events_path %>
+<p>
+  <%= @event.class.human_attribute_name :name %><br/>
+  <%= h @event.name %>
+</p>
+
+<p>
+  <%= @event.class.human_attribute_name :dates %><br/>
+  <%= h @event.dates %>
+</p>
+
+<p>
+  <%= @event.class.human_attribute_name :description %><br/>
+  <%= h @event.description %>
+</p>
+
+<p class='actions'>
+  <%= link_to I18n.t('views.actions.edit'), edit_schedular_event_path(@event) %> |
+  <%= link_to I18n.t('views.actions.back'), schedular_events_path %>
+</p>
+
+<%- content_for :calendar do -%>
+  <%- month = current_month || Date.today  -%>
+  <%= render 'calendar', :events => @month_events, :month => month.month, :year => month.year %>
+<%- end -%>

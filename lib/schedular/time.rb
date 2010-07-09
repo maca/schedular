@@ -1,5 +1,7 @@
 module Schedular
   class Time < ActiveRecord::Base
+    extend ByParams
+    
     set_table_name :schedular_times
     has_and_belongs_to_many :events, :join_table => :schedular_events_times, :class_name => 'Schedular::Event'
     

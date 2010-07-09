@@ -8,9 +8,12 @@ class Schedular::EventTest < Test::Unit::TestCase
       @event = Schedular::Event.new :dates => 'enero 2010', :name => 'evento 1'
     end
     subject { @event }
-
-    should_have_and_belong_to_many :times
-    # should_validate_presence_of :name
+    
+    should 'not accept bad date' do
+      event = Schedular::Event.new :dates => 'bad dates', :name => 'evento 1'
+      assert_equal false, event.valid?
+      assert_equal I18n.t('activerecord.errors.messages.invalid'), event.errors[:dates]
+    end
     
     context 'times without time' do
       should 'have 31 times' do
@@ -81,9 +84,9 @@ class Schedular::EventTest < Test::Unit::TestCase
         assert_equal [@event3], Schedular::Event.by_params(:year => '2010', :month => '3', :day => '2')
       end
 
-      should 'find by params with no year' do
-        assert_equal Schedular::Event.find(:all), Schedular::Event.by_params(:year => nil)
-      end
+      # should 'find by params with no year' do
+      #   assert_equal Schedular::Event.find(:all), Schedular::Event.by_params(:year => nil)
+      # end
     end
   end
 end

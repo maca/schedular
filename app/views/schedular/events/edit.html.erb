@@ -1,6 +1,13 @@
-<h1>Editing event</h1>
+<h1><%= I18n.t 'views.headers.edit', :model => Schedular::Event.human_name %></h1>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @event %> |
-<%= link_to 'Back', schedular_events_path %>
+<p class='actions'>
+  <%= link_to I18n.t('views.actions.show'), @event %> |
+  <%= link_to I18n.t('views.actions.back'), schedular_events_path %>
+</p>
+
+<%- content_for :calendar do -%>
+  <%- month = current_month || Date.today  -%>
+  <%= render 'calendar', :events => @month_events, :month => month.month, :year => month.year %>
+<%- end -%>

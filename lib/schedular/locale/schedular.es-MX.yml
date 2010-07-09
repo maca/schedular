@@ -1,0 +1,16 @@
+es-MX:
+  activerecord:
+      models:
+          schedular/event: 'evento'
+
+  schedular:
+    views:
+      events:
+        headers:
+          listing: "Eventos para %{date}"
+
+  date:
+    formats:
+      month: "%B de %Y"
+      short_month: "%b %Y"
+      long: "%d de %B de %Y"

@@ -1,0 +1,28 @@
+<%- current_month = Date.civil year.to_i, month.to_i -%>
+
+<% calendar_for events, :year => current_month.year, :month => current_month.month, :html => {:id => 'events-calendar'} do |c| %>
+  <%- c.head do -%>
+    <%- c.r :class => :links do -%>
+      <%- c.h :colspan => 2 do -%>
+        <%- prev = current_month << 1 -%>
+        <%= link_to '&lt;&lt;', monthly_schedule_path(:year => prev.year, :month => prev.month) %>
+      <%- end -%>
+      <%- c.h :colspan => 3 do -%>
+        <%= link_to I18n.l(current_month, :format => :short_month).capitalize, monthly_schedule_path(:year => current_month.year, :month => current_month.month) %>
+      <%- end -%>
+      <%- c.h :colspan => 2 do -%>
+        <%- follow = current_month >> 1  -%>
+        <%= link_to '&gt;&gt;', monthly_schedule_path(:year => follow.year, :month => follow.month) %>
+      <%- end -%>
+    <%- end -%>
+    <%= c.r I18n.t('date.abbr_day_names').map { |day| "<th>#{day}</th>"  } %>
+  <%- end -%>
+    
+  <% c.day :day_method => lambda{ |e| e.times.map{ |t| t.value}  } do |date, events| %>
+    <%- if events.empty? -%>
+      <span class='day-number'><%= date.day %></span>
+    <%- else -%>
+      <%= link_to date.day, daily_schedule_path(:year => date.year, :month => date.month, :day => date.day), :class => 'day-number' %>
+    <%- end -%>
+  <% end %>
+<% end %>

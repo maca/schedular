@@ -40,6 +40,16 @@ class Schedular::TimeTest < Test::Unit::TestCase
       should 'find by not all day' do
         assert_equal 1, Schedular::Time.all_day(false).size
       end
+      
+      should 'find by params with month' do
+        day = Date.civil(2010)
+        assert_equal Schedular::Time.by_time_or_period(day..day >> 1), Schedular::Time.by_params(:year => '2010', :month => '1')
+      end
+
+      should 'find by params with day' do
+        day = Date.civil(2010, 3, 2)
+        assert_equal Schedular::Time.by_time_or_period(day..day + 1), Schedular::Time.by_params(:year => '2010', :month => '3', :day => '2')
+      end
     end
   end
 end
