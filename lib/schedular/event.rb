@@ -14,11 +14,11 @@ module Schedular
       {:conditions => {'schedular_times.value' => time}, :include => :times }
     }
 
-    def dates= dates # TODO: This method is soooo uneficient
-      parser = "#{ I18n.locale.to_s[0..1] }DatesParser".classify.constantize rescue raise("Eventual has not yet been implemented with for the locale '#{I18n.locale}'")
-      parsed = parser.new.parse(dates)
+    def dates= dates
+      parsed = Eventual.parse dates, :lang => I18n.locale
       
       self.times = parsed.map do |time|
+        # TODO: This method is soooo uneficient
         all_day  = !(DateTime === time)
         Schedular::Time.all_day(all_day).by_time_or_period(time).first || Schedular::Time.new(:value => time, :all_day => all_day)
       end if parsed
