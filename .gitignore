@@ -17,6 +17,7 @@ tmtags
 coverage
 rdoc
 pkg
+schedular.gemspec
 
 ## PROJECT::SPECIFIC
 test/rails_app/db
