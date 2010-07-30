@@ -16,7 +16,10 @@
 </p>
 
 <p class='actions'>
-  <%= link_to I18n.t('views.actions.edit'), edit_schedular_event_path(@event) %> |
+  <%= link_to I18n.t('views.actions.edit'), edit_schedular_event_path(@event) %> 
+  |
+  <%= link_to I18n.t('views.actions.destroy'), @event, :confirm => I18n.t('views.prompts.confir_destroy', :model => @event.class.human_name), :method => :delete %>
+  |
   <%= link_to I18n.t('views.actions.back'), schedular_events_path %>
 </p>
 

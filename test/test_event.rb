@@ -9,6 +9,9 @@ class Schedular::EventTest < Test::Unit::TestCase
     end
     subject { @event }
     
+    should_validate_presence_of :name
+    # should_validate_presence_of :dates
+    
     should 'not accept bad date' do
       event = Schedular::Event.new :dates => 'bad dates', :name => 'evento 1'
       assert_equal false, event.valid?
@@ -87,6 +90,13 @@ class Schedular::EventTest < Test::Unit::TestCase
       # should 'find by params with no year' do
       #   assert_equal Schedular::Event.find(:all), Schedular::Event.by_params(:year => nil)
       # end
+    end
+  
+    should 'allways order times by value' do
+      Schedular::Time.destroy_all
+      times        = [Date.today << 1, Date.today, Date.today >> 1]
+      @event.times = times.sort_by{rand}.map{ |t| Schedular::Time.create(:value => t) }
+      assert_equal times.map(&:month), @event.times.map{ |d| d.value.month  }
     end
   end
 end

@@ -4,10 +4,8 @@ module Schedular
     
     def index
       today   = Date.today
-      
       return redirect_to(monthly_schedule_path(:year => params[:year] || today.year, :month => today.month)) unless params[:year] && params[:month]
-      @events                 = Event.by_params(params).include_times
-      @month_events           = params[:day] ? Event.by_params(params.merge(:day => nil)) : @events
+      get_events
       session[:current_month] = Date.civil params[:year].to_i, params[:month].to_i
       
       respond_to do |format|
@@ -82,6 +80,11 @@ module Schedular
         format.xml  { head :ok }
         format.json { head :ok }
       end
+    end
+  
+    def get_events
+      @events                 = Event.by_params(params).include_times
+      @month_events           = params[:day] ? Event.by_params(params.merge(:day => nil)) : @events
     end
   
     private

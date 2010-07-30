@@ -4,14 +4,17 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "schedular"
-    gem.summary = %Q{Bare Bones Events CMS Rails Engine}
-    gem.description = %Q{Bare Bones Events CMS Rails Engine}
-    gem.email = "macarui@gmail.com"
-    gem.homepage = "http://github.com/maca/schedular"
-    gem.authors = ["Macario Ortega"]
+    gem.name        = "schedular"
+    gem.summary     = %Q{Bare Bones Events CMS Rails Engine}
+    gem.description = %Q{Bare Bones Events CMS Rails Engine, event dates can be inputed as text in spanish, english date recognition is next.}
+    gem.email       = "macarui@gmail.com"
+    gem.homepage    = "http://github.com/maca/schedular"
+    gem.authors     = ["Macario Ortega"]
     gem.add_development_dependency "shoulda", ">= 0"
-    gem.add_dependency('table_builder', '>= 0.2.3')
+    gem.add_dependency 'table_builder', '>= 0.2.3'
+    gem.add_dependency 'eventual',      '>= 0.5.3'
+    gem.add_dependency 'es-mx-locale',  '>= 0.1.1'
+    
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
@@ -48,7 +51,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "schedular #{version}"
+  rdoc.title    = "schedular #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

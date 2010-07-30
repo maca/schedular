@@ -1,11 +1,12 @@
 module Schedular
   class Event < ActiveRecord::Base
     extend ByParams
-    
+
     set_table_name :schedular_events
-    has_and_belongs_to_many :times, :join_table => :schedular_events_times, :class_name => 'Schedular::Time'
+    has_and_belongs_to_many :times, :join_table => :schedular_events_times, :class_name => 'Schedular::Time'#, :order => 'value asc'
+    # TODO: order doesn't work
     
-    validates_presence_of :name
+    validates_presence_of :name, :dates
     validate :times_not_empty
     
     named_scope :include_times,     :include => :times

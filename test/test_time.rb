@@ -51,5 +51,12 @@ class Schedular::TimeTest < Test::Unit::TestCase
         assert_equal Schedular::Time.by_time_or_period(day..day + 1), Schedular::Time.by_params(:year => '2010', :month => '3', :day => '2')
       end
     end
+  
+    should 'allways order by value' do
+      Schedular::Time.destroy_all
+      times = [Date.today << 1, Date.today, Date.today >> 1]
+      times.sort_by{ rand }.each{ |t| Schedular::Time.create(:value => t) }
+      assert_equal times.map(&:month), Schedular::Time.find(:all).map{ |d| d.value.month  }
+    end
   end
 end

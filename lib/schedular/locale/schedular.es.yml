@@ -1,7 +1,13 @@
-es-MX:
+es:
   activerecord:
-      models:
-          schedular/event: 'evento'
+    models:
+      schedular/event: 'Evento'
+          
+    attributes:
+      schedular/event:
+        name: Nombre
+        dates: Fechas
+        description: Descripción
 
   schedular:
     views:
