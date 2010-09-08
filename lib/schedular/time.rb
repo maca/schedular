@@ -1,6 +1,5 @@
 module Schedular
   class Time < ActiveRecord::Base
-    extend ByParams
     default_scope :order => 'value asc'
     
     set_table_name :schedular_times
@@ -16,5 +15,11 @@ module Schedular
     }
     
     named_scope :all_day, lambda{ |bool| {:conditions => {'all_day' => (bool.nil? ? true : bool)} }}
+    
+    def self.by_params params
+      return if params[:year].nil? and params[:month].nil? #TODO: By year
+      day = Date.civil params[:year].to_i, params[:month].to_i, (params[:day] || 1).to_i
+      params[:day] ? by_time_or_period(day) : by_time_or_period(day..day >> 1)
+    end
   end
 end

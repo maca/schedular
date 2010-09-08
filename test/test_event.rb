@@ -1,7 +1,7 @@
 require 'helper'
 
 class Schedular::EventTest < Test::Unit::TestCase
-  context 'date parsing' do
+  context 'event' do
     setup do
       Schedular::Event.destroy_all
       Schedular::Time.destroy_all
@@ -78,9 +78,13 @@ class Schedular::EventTest < Test::Unit::TestCase
       should 'find by day' do
         assert_equal [@event3], Schedular::Event.by_time_or_period(Date.civil(2010, 3, 2))
       end
+      
+      should 'find by params without date' do
+        assert_equal [@event, @event2], Schedular::Event.by_params(:year => '2010', :month => '1')
+      end
 
       should 'find by params with month' do
-        assert_equal [@event, @event2], Schedular::Event.by_params(:year => '2010', :month => '1')
+        assert_equal [@event, @event2, @event3], Schedular::Event.by_params({})
       end
 
       should 'find by params with day' do
@@ -96,6 +100,7 @@ class Schedular::EventTest < Test::Unit::TestCase
       Schedular::Time.destroy_all
       times        = [Date.today << 1, Date.today, Date.today >> 1]
       @event.times = times.sort_by{rand}.map{ |t| Schedular::Time.create(:value => t) }
+      @event.save! and @event.reload
       assert_equal times.map(&:month), @event.times.map{ |d| d.value.month  }
     end
   end
