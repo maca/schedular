@@ -13,9 +13,10 @@ class Schedular::EventTest < Test::Unit::TestCase
     # should_validate_presence_of :dates
     
     should 'not accept bad date' do
-      event = Schedular::Event.new :dates => 'bad dates', :name => 'evento 1'
-      assert_equal false, event.valid?
-      assert_equal I18n.t('activerecord.errors.messages.invalid'), event.errors[:dates]
+      @event.dates = 'bad dates'
+      assert_equal false, @event.valid?
+      assert_equal I18n.t('activerecord.errors.messages.invalid'), @event.errors[:dates]
+      assert_equal true, @event.times.blank?
     end
     
     context 'times without time' do

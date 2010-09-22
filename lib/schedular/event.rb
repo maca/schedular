@@ -16,11 +16,15 @@ module Schedular
     def dates= dates
       parsed = Eventual.parse dates, :lang => I18n.locale
       
-      self.times = parsed.map do |time|
-        # TODO: This method is soooo uneficient
-        all_day  = !(DateTime === time)
-        Schedular::Time.all_day(all_day).by_time_or_period(time).first || Schedular::Time.new(:value => time, :all_day => all_day)
-      end if parsed
+      if parsed
+        self.times = parsed.map do |time|
+          # TODO: This method is soooo uneficient
+          all_day  = !(DateTime === time)
+          Schedular::Time.all_day(all_day).by_time_or_period(time).first || Schedular::Time.new(:value => time, :all_day => all_day)
+        end
+      else
+        self.times = []
+      end
       
       self['dates'] = dates
     end
