@@ -13,6 +13,7 @@ ActiveRecord::Schema.define :version => 1 do
   create_table :schedular_times do |t|
     t.datetime :value
     t.boolean  :all_day
+    t.integer  :duration
   end
   
   create_table :schedular_events_times, :id => false do |t|

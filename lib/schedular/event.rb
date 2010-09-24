@@ -8,7 +8,7 @@ module Schedular
     
     named_scope :all, {}
     named_scope :include_times,     :include => :times
-    named_scope :by_time_or_period, lambda{ |time|
+    named_scope :by_time_or_period, lambda { |time|
       time = Range === time || DateTime === time ? time : (time..time+1)
       {:conditions => {'schedular_times.value' => time}, :include => :times }
     }
@@ -18,9 +18,16 @@ module Schedular
       
       if parsed
         self.times = parsed.map do |time|
+          all_day  = time.class == Date
+          
+          if Range === time
+            duration = ((time.last.to_f - time.first.to_f) / 60).to_i
+            time     = time.first
+          else
+            duration = nil
+          end
           # TODO: This method is soooo uneficient
-          all_day  = !(DateTime === time)
-          Schedular::Time.all_day(all_day).by_time_or_period(time).first || Schedular::Time.new(:value => time, :all_day => all_day)
+          Schedular::Time.by_time_or_period(time).all_day(all_day).duration(duration).first || Schedular::Time.new(:value => time, :all_day => all_day, :duration => duration)
         end
       else
         self.times = []

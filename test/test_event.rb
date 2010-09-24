@@ -10,7 +10,12 @@ class Schedular::EventTest < Test::Unit::TestCase
     subject { @event }
     
     should_validate_presence_of :name
-    # should_validate_presence_of :dates
+    
+    should 'accept time ranges' do
+      @event.dates = '1 de enero del 2010 de las 15:00 a las 16:00 y de las 17:00 a las 19:00'
+      assert_equal [DateTime.civil(2010, 1, 1, 15), DateTime.civil(2010, 1, 1, 17)], @event.times.map(&:value)
+      assert_equal [60, 120], @event.times.map(&:duration)
+    end
     
     should 'not accept bad date' do
       @event.dates = 'bad dates'

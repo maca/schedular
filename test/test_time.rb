@@ -9,28 +9,32 @@ class Schedular::TimeTest < Test::Unit::TestCase
     end
     subject { @time }
 
-    should_have_and_belong_to_many :events
+    should have_and_belong_to_many :events
+
+    should 'validate all day not null'
+
     
     context 'named scopes' do
       setup do
-        @event  = Schedular::Event.create! :dates => '1 de enero 2010 a las 10:00', :name => 'Evento 1'
-        @event2 = Schedular::Event.create! :dates => 'enero y febrero 2010',        :name => 'Evento 2'
+        Schedular::Time.create!  :value => DateTime.civil(2010, 1, 1, 10), :duration => 60,  :all_day => false
+        Schedular::Time.create!  :value => DateTime.civil(2010, 1, 1, 10), :duration => 120, :all_day => false
+        Schedular::Event.create! :dates => 'enero y febrero 2010', :name => 'Evento 2'
       end
 
       should 'have 60 times' do
-        assert_equal 60, Schedular::Time.count
+        assert_equal 61, Schedular::Time.count
       end
 
       should 'find by time or period (Range)' do
-        assert_equal 32, Schedular::Time.by_time_or_period(Date.civil(2010)..Date.civil(2010, 2)).size
+        assert_equal 33, Schedular::Time.by_time_or_period(Date.civil(2010)..Date.civil(2010, 2)).size
       end
       
       should 'find by time or period (Date)' do
-        assert_equal 2, Schedular::Time.by_time_or_period(Date.civil(2010)).size
+        assert_equal 3, Schedular::Time.by_time_or_period(Date.civil(2010)).size
       end
       
       should 'find by time or period (DateTime)' do
-        assert_equal 1, Schedular::Time.by_time_or_period(DateTime.civil(2010, 1, 1, 10)).size
+        assert_equal 2, Schedular::Time.by_time_or_period(DateTime.civil(2010, 1, 1, 10)).size
       end
       
       should 'find by all day' do
@@ -38,7 +42,26 @@ class Schedular::TimeTest < Test::Unit::TestCase
       end
       
       should 'find by not all day' do
-        assert_equal 1, Schedular::Time.all_day(false).size
+        assert_equal 2, Schedular::Time.all_day(false).size
+      end
+      
+      should 'find by duration' do
+        assert_equal 1, Schedular::Time.duration(60).size
+        assert_equal 1, Schedular::Time.duration(120).size
+      end
+      
+      should 'find by duration less than' do
+        assert_equal 2, Schedular::Time.duration_less_or_equal(120).size
+        assert_equal 2, Schedular::Time.duration_less_or_equal(121).size
+        assert_equal 1, Schedular::Time.duration_less_or_equal(60).size
+        assert_equal 1, Schedular::Time.duration_less_or_equal(61).size
+      end
+      
+      should 'find by duration more than' do
+        assert_equal 2, Schedular::Time.duration_more_or_equal(59).size
+        assert_equal 2, Schedular::Time.duration_more_or_equal(60).size
+        assert_equal 1, Schedular::Time.duration_more_or_equal(119).size
+        assert_equal 1, Schedular::Time.duration_more_or_equal(120).size
       end
       
       should 'find by params with month' do

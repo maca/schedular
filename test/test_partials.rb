@@ -12,6 +12,17 @@ class PartialsTest < ActionView::TestCase
       html = <<-HTML
         <table id="events-calendar">
           <thead>
+            <tr class="links">
+              <th colspan="2">
+                <a href="/events/2009/12">&lt;&lt;</a>
+              </th>
+              <th colspan="3">
+                <a href="/events/2010/1">Ene 2010</a>
+              </th>
+              <th colspan="2">
+                <a href="/events/2010/2">&gt;&gt;</a>
+              </th>
+            </tr>
             <tr><th>dom</th><th>lun</th><th>mar</th><th>mie</th><th>jue</th><th>vie</th><th>sab</th></tr>
           </thead>
           <tbody>
@@ -25,13 +36,24 @@ class PartialsTest < ActionView::TestCase
         </table>
       HTML
 
-      assert_dom_equal html, render('schedular/events/month', :events => [], :year => 2010, :month => 1)
+      assert_dom_equal html, render('schedular/events/calendar', :events => [], :year => 2010, :month => 1)
     end
     
     should 'render day numbers with events' do
       html = <<-HTML
         <table id="events-calendar">
           <thead>
+            <tr class="links">
+              <th colspan="2">
+                <a href="/events/2009/12">&lt;&lt;</a>
+              </th>
+              <th colspan="3">
+                <a href="/events/2010/1">Ene 2010</a>
+              </th>
+              <th colspan="2">
+                <a href="/events/2010/2">&gt;&gt;</a>
+              </th>
+            </tr>
             <tr><th>dom</th><th>lun</th><th>mar</th><th>mie</th><th>jue</th><th>vie</th><th>sab</th></tr>
           </thead>
           <tbody>
@@ -45,7 +67,7 @@ class PartialsTest < ActionView::TestCase
         </table>
       HTML
 
-      assert_dom_equal html, render('schedular/events/month', :events => [@event], :year => 2010, :month => 1)
+      assert_dom_equal html, render('schedular/events/calendar', :events => [@event], :year => 2010, :month => 1)
     end
   end
   

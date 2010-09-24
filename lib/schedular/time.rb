@@ -16,6 +16,10 @@ module Schedular
     
     named_scope :all_day, lambda{ |bool| {:conditions => {'all_day' => (bool.nil? ? true : bool)} }}
     
+    named_scope :duration, lambda{ |duration| {:conditions => {:duration => duration}} }
+    named_scope :duration_less_or_equal, lambda{ |duration| {:conditions => ['duration <= ?', duration]} }
+    named_scope :duration_more_or_equal, lambda{ |duration| {:conditions => ['duration >= ?', duration]} }
+    
     def self.by_params params
       return if params[:year].nil? and params[:month].nil? #TODO: By year
       day = Date.civil params[:year].to_i, params[:month].to_i, (params[:day] || 1).to_i
