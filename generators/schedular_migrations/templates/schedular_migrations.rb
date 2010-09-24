@@ -10,6 +10,7 @@ class SchedularMigrations < ActiveRecord::Migration
     create_table :schedular_times do |t|
       t.datetime :value
       t.boolean  :all_day
+      t.integer  :duration
       t.timestamps
     end
     
