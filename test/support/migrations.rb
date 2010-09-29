@@ -2,7 +2,6 @@ ActiveRecord::Migration.verbose       = false
 ActiveRecord::Base.establish_connection :adapter => "sqlite3", :database => ":memory:"
 
 ActiveRecord::Schema.define :version => 1 do
-
   create_table  :schedular_events do |t|
     t.string    :name
     t.string    :dates
@@ -14,6 +13,7 @@ ActiveRecord::Schema.define :version => 1 do
     t.datetime :value
     t.boolean  :all_day
     t.integer  :duration
+    t.da
   end
   
   create_table :schedular_events_times, :id => false do |t|

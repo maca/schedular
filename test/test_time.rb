@@ -10,10 +10,8 @@ class Schedular::TimeTest < Test::Unit::TestCase
     subject { @time }
 
     should have_and_belong_to_many :events
+    should validate_presence_of :value
 
-    should 'validate all day not null'
-
-    
     context 'named scopes' do
       setup do
         Schedular::Time.create!  :value => DateTime.civil(2010, 1, 1, 10), :duration => 60,  :all_day => false
