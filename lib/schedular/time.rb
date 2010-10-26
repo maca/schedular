@@ -16,9 +16,7 @@ module Schedular
       { :conditions => {:value => time} }
     }
 
-    named_scope :closest_to, lambda { |*args|
-      date  = args.first
-      count = args[1] || 1
+    named_scope :order_by_closest_to, lambda { |date|
       {:limit => count, :order => "ABS(strftime('%s', value) - strftime('%s', #{date.to_formatted_s :db})) desc"}
     }
     
