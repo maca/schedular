@@ -71,6 +71,10 @@ class Schedular::TimeTest < Test::Unit::TestCase
         day = Date.civil(2010, 3, 2)
         assert_equal Schedular::Time.by_time_or_period(day..day + 1), Schedular::Time.by_params(:year => '2010', :month => '3', :day => '2')
       end
+
+      should 'find closest' do
+        assert_equal Schedular::Time.by_time_or_period(Date.civil(2010, 2, -1)), Schedular::Time.closest_to(Date.civil(2010, 3), 1)
+      end
     end
   
     should 'allways order by value' do

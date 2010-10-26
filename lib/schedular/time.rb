@@ -15,6 +15,12 @@ module Schedular
       time = Range === time || DateTime === time ? time : (time..time+1)
       { :conditions => {:value => time} }
     }
+
+    named_scope :closest_to, lambda { |*args|
+      date  = args.first
+      count = args[1] || 1
+      {:limit => count, :order => "ABS(strftime('%s', value) - strftime('%s', #{date.to_formatted_s :db})) desc"}
+    }
     
     named_scope :all_day, lambda{ |bool| {:conditions => {'all_day' => (bool.nil? ? true : bool)} }}
     
