@@ -71,10 +71,32 @@ class Schedular::TimeTest < Test::Unit::TestCase
         day = Date.civil(2010, 3, 2)
         assert_equal Schedular::Time.by_time_or_period(day..day + 1), Schedular::Time.by_params(:year => '2010', :month => '3', :day => '2')
       end
+    end
 
-      should 'find closest' do
-        assert_equal Schedular::Time.by_time_or_period(Date.civil(2010, 2, -1)), Schedular::Time.closest_to(Date.civil(2010, 3), 1)
+    context 'scopes' do
+      setup do
+        Schedular::Event.destroy_all
+        @jan1_10am = Schedular::Time.create! :value => DateTime.civil(2010, 1, 1, 10), :duration => 60, :all_day => false
+        @jan1      = Schedular::Time.create! :value => DateTime.civil(2010, 1, 1), :all_day => true
+        @jan3      = Schedular::Time.create! :value => DateTime.civil(2010, 1, 3), :all_day => true
+        @jan3_10am = Schedular::Time.create! :value => DateTime.civil(2010, 1, 3, 10), :duration => 60, :all_day => false
       end
+
+      should 'order by closest to' do
+        assert_equal [@jan1_10am, @jan1, @jan3, @jan3_10am], Schedular::Time.order_by_closest_to(DateTime.civil(2010, 1, 2))
+      end
+
+      should 'find by event' do
+        event = Schedular::Event.create! :name => 'evento', :dates => '1 de diciembre del 2009'
+        event.times = [@jan1]
+        assert_equal  [@jan1], event.times
+        assert_equal  [@jan1], Schedular::Time.joins_events.by_event(event)
+        assert_equal  [@jan1], Schedular::Time.joins_events.by_event(event.id)
+      end
+
+      # should 'order by following closest to' do
+      #   assert_equal [@jan3, @jan3_10am, @jan1_10am, @jan1], Schedular::Time.order_by_following_closest_to(DateTime.civil(2010, 1, 2))
+      # end
     end
   
     should 'allways order by value' do

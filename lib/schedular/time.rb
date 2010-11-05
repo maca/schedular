@@ -10,15 +10,23 @@ module Schedular
     named_scope :joins_events,   :joins   => :events
     named_scope :include_events, :include => :events
     named_scope :order_by_value, :order => 'value asc'
-    
+
+    named_scope :by_event, lambda { |event|
+      { :conditions => {:'schedular_events.id' => event}} 
+    }
+
     named_scope :by_time_or_period, lambda{ |time|
       time = Range === time || DateTime === time ? time : (time..time+1)
       { :conditions => {:value => time} }
     }
 
     named_scope :order_by_closest_to, lambda { |date|
-      {:limit => count, :order => "ABS(strftime('%s', value) - strftime('%s', #{date.to_formatted_s :db})) desc"}
+      {:order => %{ABS(strftime('%s', "#{date.to_formatted_s(:db)}") - strftime('%s', value)) asc} }
     }
+
+    # named_scope :order_by_following_closest_to, lambda { |date|
+    #   {:order => %{(strftime('%s', "#{date.to_formatted_s(:db)}") - strftime('%s', value))  asc} }
+    # }
     
     named_scope :all_day, lambda{ |bool| {:conditions => {'all_day' => (bool.nil? ? true : bool)} }}
     

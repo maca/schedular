@@ -100,10 +100,6 @@ class Schedular::EventTest < Test::Unit::TestCase
       should 'find by params with no year' do
         assert_equal Schedular::Event.find(:all), Schedular::Event.by_params(:year => nil)
       end
-
-      should 'find closest prior date' do
-        assert_equal Schedular::Time.by_time_or_period(Date.civil(2010, 1, -1)), Schedular::Event.closest_dates(Date.civil(2010, 3), 1)
-      end
     end
   
     should 'allways order times by value' do
